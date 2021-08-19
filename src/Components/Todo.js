@@ -22,17 +22,29 @@ export default class Todo extends Component {
   };
 
   handleSubmit = (e) => {
-    let nta = [
-      ...this.state.tasks,
-      { id: this.state.tasks.length + 1, txt: this.state.currTask },
-    ];
-    this.setState({
-        tasks: nta,
-        currTask:''
-    })
-
+      if(this.state.currTask!==''){
+        let nta = [
+            ...this.state.tasks,
+            { id: this.state.tasks.length + 1, txt: this.state.currTask },
+          ];
+          this.setState({
+              tasks: nta,
+              currTask:''
+          })
+      
+      }
+    
 
   };
+
+  onDelete=(id)=>{
+      let nfa=this.state.tasks.filter(function(tobj){
+          return tobj.id!=id;
+      })
+      this.setState({
+          tasks: nfa
+      })
+  }
 
   render() {
     return (
@@ -47,11 +59,13 @@ export default class Todo extends Component {
         </div>
         <div className="class-list">
           <ul>
-            {this.state.tasks.map(function (tobj) {
+            {this.state.tasks.map((tobj)=> {
               return (
-                <li>
+                <li key={tobj.txt}>
                   <h1>{tobj.txt}</h1>
-                  <button>Delete</button>
+                  <button onClick={()=>{
+                   return this.onDelete(tobj.id)
+                  } }>Delete</button>
                 </li>
               );
             })}
